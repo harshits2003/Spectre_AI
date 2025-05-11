@@ -230,5 +230,221 @@
     {
         "role": "assistant",
         "content": "The Riemann Hypothesis is a conjecture in mathematics that deals with the distribution of prime numbers. It states that all non-trivial zeros of the Riemann zeta function lie on a vertical line in the complex plane, which is crucial in number theory."
+    },
+    {
+        "role": "user",
+        "content": "hello"
+    },
+    {
+        "role": "assistant",
+        "content": "Hello again!"
+    },
+    {
+        "role": "user",
+        "content": "how are you"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm doing great, thanks for asking! Always ready to chat and help with any questions. How about you?"
+    },
+    {
+        "role": "user",
+        "content": "okay tell me about surajmal. which state did he rule"
+    },
+    {
+        "role": "assistant",
+        "content": "Suraj Mal was a ruler of the Bharatpur state in Rajasthan, India."
+    },
+    {
+        "role": "user",
+        "content": "who was defeated by king surajmal?"
+    },
+    {
+        "role": "assistant",
+        "content": "King Suraj Mal defeated S\u0101dil Khan and Raja Devidatta in battle."
+    },
+    {
+        "role": "user",
+        "content": "in which battle"
+    },
+    {
+        "role": "assistant",
+        "content": "King Suraj Mal defeated the Mughal Empire in the Battle of Bharatpur in 1763."
+    },
+    {
+        "role": "user",
+        "content": "Hi how are you?"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi! I'm doing fantastic, thanks for asking! Always ready to chat and help with any questions. How about you?"
+    },
+    {
+        "role": "user",
+        "content": "Tell me about the weather today."
+    },
+    {
+        "role": "assistant",
+        "content": "I'm not aware of the current weather in your location. However, I can suggest some ways for you to find out the current weather."
+    },
+    {
+        "role": "user",
+        "content": "Hello spectre how are you?"
+    },
+    {
+        "role": "assistant",
+        "content": "Hello! I'm doing great, thanks for asking! Always ready to chat and help with any questions. How about you?"
+    },
+    {
+        "role": "user",
+        "content": "Who is the president of the usa?"
+    },
+    {
+        "role": "assistant",
+        "content": "The President of the United States is Donald Trump."
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello!"
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello again!"
+    },
+    {
+        "role": "user",
+        "content": "Hello hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello hello back to you!"
+    },
+    {
+        "role": "user",
+        "content": "Okay, bye!"
+    },
+    {
+        "role": "assistant",
+        "content": "Bye for now!"
+    },
+    {
+        "role": "user",
+        "content": "Hello hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello hello again!"
+    },
+    {
+        "role": "user",
+        "content": "Tell me something camera."
+    },
+    {
+        "role": "assistant",
+        "content": "I'm not a camera, I'm Spectre, your advanced AI chatbot!"
+    },
+    {
+        "role": "user",
+        "content": "Tell me something about rbi."
+    },
+    {
+        "role": "assistant",
+        "content": "The Reserve Bank of India (RBI) is the central bank of India, responsible for regulating the Indian banking system and managing the country's foreign exchange reserves."
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello!"
+    },
+    {
+        "role": "user",
+        "content": "Yes it's working."
+    },
+    {
+        "role": "assistant",
+        "content": "I'm glad to hear that everything is working as expected! If you have any questions or need assistance, I'm here to help."
+    },
+    {
+        "role": "user",
+        "content": "Tell me the exact location of thanos."
+    },
+    {
+        "role": "assistant",
+        "content": "According to my search results, Thanos is on an unknown planet. He has adopted the identity of a farmer, as seen in the Endgame trailer. He was just teleported to the Soul World."
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello!"
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello again!"
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello once more!"
+    },
+    {
+        "role": "user",
+        "content": "Mechanical hello."
+    },
+    {
+        "role": "assistant",
+        "content": "*beep boop* Hello!"
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "*echo* Hello!"
+    },
+    {
+        "role": "user",
+        "content": "Hello hello."
+    },
+    {
+        "role": "assistant",
+        "content": "*echo echo* Hello hello!"
+    },
+    {
+        "role": "user",
+        "content": "Ek kam karo mere ko ek image dikhao ek 3 bhk room ka jiske jo deewar hai vah pink ho aur sealing per do fan ho room mein table aur do bed ho do chair ho aur ek window."
+    },
+    {
+        "role": "assistant",
+        "content": "I'm a text-based AI, I don't have the capability to display images. However, I can try to describe the scene you've described:\n\nImagine a cozy 3BHK room with pink walls. The ceiling has two fans installed. The room is furnished with a table, two beds, two chairs, and a window that brings in natural light."
+    },
+    {
+        "role": "user",
+        "content": "Docomo."
+    },
+    {
+        "role": "assistant",
+        "content": "A blast from the past! DoCoMo was a popular Japanese mobile phone operator."
     }
 ]

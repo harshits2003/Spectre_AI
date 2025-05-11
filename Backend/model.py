@@ -84,7 +84,7 @@ def FirstLayerDMM(prompt: str = "test"):
     response = response.split(",")
 
     #Strip leading and trailing whitespaces from each task
-    response - [i.strip() for i in response]
+    response = [i.strip() for i in response]
 
     #nitialize an empty list for filtered valid task
     temp = []
@@ -92,7 +92,7 @@ def FirstLayerDMM(prompt: str = "test"):
     #Filter the tasks based on recognized function keywords
     for task in response:
         for func in funcs:
-            if task.stratswith(func):
+            if task.startswith(func):
                 temp.append(task)  #Add valid tasks to the filtered list
 
     #Update the response with the filtered list of tasks
