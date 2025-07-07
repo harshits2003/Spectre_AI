@@ -446,5 +446,13 @@
     {
         "role": "assistant",
         "content": "A blast from the past! DoCoMo was a popular Japanese mobile phone operator."
+    },
+    {
+        "role": "user",
+        "content": "Hello."
+    },
+    {
+        "role": "assistant",
+        "content": "Hello!"
     }
 ]
