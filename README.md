@@ -100,8 +100,10 @@ Let’s build the future of real-time AI assistants—together.
 
 ---
 
-📜 License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 
 
