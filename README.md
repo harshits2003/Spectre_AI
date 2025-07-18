@@ -1,6 +1,6 @@
-# 🌌 Spectre_AI - Agentic Voice Chatbot System
+# 🌌 Spectre_AI - Agentic Personal Assistant
 
-**Spectre_AI** is an intelligent, real-time, agentic voice chatbot system built for seamless, multi-user, voice-native conversational experiences. Unlike traditional chatbots, Spectre_AI offers highly responsive, context-aware interactions powered by dynamic tool orchestration and advanced memory.
+**Spectre_AI** is an intelligent, real-time, agentic personal assistant system built for seamless, multi-user, voice-native conversational experiences. Unlike traditional chatbots, Spectre_AI offers highly responsive, context-aware interactions powered by dynamic tool orchestration and advanced memory.
 
 ---
 
