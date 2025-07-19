@@ -30,28 +30,23 @@ def open_images(prompt):
         except IOError:
             print(f"Unable to open {image_path}")
 
-#API details for the Hugging Face Stable Diffusion Model (using a faster, lighter model)
-API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-base"
+#API details for the Hugging Face Stable Diffusion Model
+API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
 headers = {"Authorization": f"Bearer {get_key('.env', 'HuggingFaceAPIKey')}"}
 
 #Async function to send a query to the Hugging Face API
 async def query(payload):
-    try:
-        response = await asyncio.to_thread(requests.post, API_URL, headers=headers, json=payload)
-        response.raise_for_status()
-        return response.content
-    except Exception as e:
-        print(f"Request failed: {e}")
-        return None
+    response = await asyncio.to_thread(requests.post, API_URL, headers=headers, json=payload)
+    return response.content
 
 #Async function to generate images based on the given prompt
 async def generate_images(prompt: str):
     tasks= []
 
-    #Create 4 image generation tasks concurrently
+    #Create 4 image generation tasks
     for _ in range(4):
         payload={
-            "inputs": f"{prompt}, quality=4K, sharpness=maximum, Ultra High details, high resolution, seed={randint(0,1000000)}",
+            "inputs": f"{prompt}, quality=4K, sharpness=maximum, Ultra High details, high resolution, seed = {randint(0,1000000)}",
         }
         task = asyncio.create_task(query(payload))
         tasks.append(task)
@@ -61,11 +56,8 @@ async def generate_images(prompt: str):
 
     #Save the generated images to files
     for i, image_bytes in enumerate(image_bytes_list):
-        if image_bytes:
-            with open(f"Data\\{prompt.replace(' ','_')}{i+1}.jpg", "wb") as f:
-                f.write(image_bytes)
-        else:
-            print(f"Image generation failed for image {i+1}")
+        with open(f"Data\{prompt.replace(' ','_')}{i+1}.jpg", "wb") as f:
+            f.write(image_bytes)
 
 #Wrapper function to generate and open images
 def GenerateImages(prompt: str):

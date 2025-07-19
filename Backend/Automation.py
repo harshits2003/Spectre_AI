@@ -17,6 +17,8 @@ from ics import Calendar, Event
 from datetime import datetime
 import os
 import webbrowser
+from Backend.SystemControl import set_volume, mute_mic, adjust_brightness
+
 
 env_vars = dotenv_values(".env")
 GroqAPIKey = env_vars.get("GroqAPIKey")
@@ -50,48 +52,48 @@ def GoogleSearch(Topic):
     return True
 
 #Function to generate content using AI and save it to a file
+def OpenNotepad(filepath):
+    os.system(f"notepad.exe {filepath}")
+
 def Content(Topic):
+    try:
+        # Extract actual topic (removes the "content " prefix)
+        Topic = Topic.replace("content ", "").strip()
 
-    #Nested function to open a file in Notepad
-    def OpenNotepad(File):
-        default_text_editor = 'notepad.exe'
-        subprocess.Popen([default_text_editor, File])  #Open the file in Notepad
+        print(f"⏳ Generating content for: {Topic}")
 
-    #Nested function to generate content using the AI chatbot
-    def ContentWriterAI(prompt):
-        messages.append({"role": "user", "content": f"{prompt}"})
-
+        # Call the Groq LLM API with updated model
         completion = client.chat.completions.create(
-            model = "mixtral-8x7b-32768",   #specify the AI model
-            messages = SystemChatBot + messages,   #Include system instructions and chat history
-            max_tokens=2048,
-            temperature=0.7,
-            top_p=1,   #Use nucleus samping for response diversity
-            stream=True,   #Enables Streaming responses
-            stop=None   #Allow model to decide the stopping conditions
+            model="llama3-70b-8192",  # ✅ Updated from deprecated mixtral
+            messages=[
+                {"role": "system", "content": "You're a professional content creator. Create informative, creative, and well-structured content."},
+                {"role": "user", "content": f"Write content on the topic: {Topic}"}
+            ],
+            temperature=0.8,
+            stream=True
         )
 
-        Answer = ""
-
-        #Process streamed response chunks
+        # Collect the streamed content
+        ContentByAI = ""
         for chunk in completion:
-            if chunk.choices[0].delta.content:   #Check for content in the current chunk
-                Answer += chunk.choices[0].delta.content   #append the cintent to the answer
-        
-        Answer = Answer.replace("</s>", "")   #Remove unwanted tokens from the response
-        messages.append({"role": "assistant", "content": Answer})   #Add the AI's response to messages
-        return Answer
-    
-    Topic = Topic.replace("Content ", "").strip()  #Remove 'Content' from the topic
-    ContentByAI = ContentWriterAI(Topic)   #Generate content using AI
+            if chunk.choices[0].delta.content:
+                ContentByAI += chunk.choices[0].delta.content
+                print(chunk.choices[0].delta.content, end="")
 
-    #Save the generated content to a text file
-    with open(rf"Data\{Topic.lower.replace(' ','')}.txt", "w", encoding="utf-8") as file:
-        file.write(ContentByAI)   #Write the generated content to the file
-        file.close()
+        # Ensure filename is safe
+        safe_filename = Topic.lower().replace(' ', '_').replace('/', '_')
+        filepath = os.path.join("Data", f"{safe_filename}.txt")
 
-        OpenNotepad(rf"Data\{Topic.lower().replace(' '),''}.txt")   #Open file in Notepad
-        return True
+        # Write content to a file
+        os.makedirs("Data", exist_ok=True)
+        with open(filepath, "w", encoding="utf-8") as file:
+            file.write(ContentByAI)
+
+        print(f"\n✅ Content saved to {filepath}")
+        OpenNotepad(filepath)
+
+    except Exception as e:
+        print(f"❌ Error generating content: {e}")
     
 #Function to search for a topic on YouTube
 def YoutubeSearch(Topic):
@@ -158,46 +160,55 @@ def CloseApp(app):
             return False #Indicated failure
     
 #Function to execute system-level commands
-def System(command):
+def System(command: str):
+    command = command.lower()
 
-    #Nested function to mute the system volume
-    def mute():
-        keyboard.press_and_release("volume mute")
+    if "volume up" in command:
+        percent = extract_percent(command) or 10
+        set_volume(percent)
+        print(f"🔊 Volume increased by {percent}%")
 
-    #Nested function to unmute the system
-    def unmute():
-        keyboard.press_and_release("volume mute")
+    elif "volume down" in command:
+        percent = extract_percent(command) or 10
+        set_volume(-percent)
+        print(f"🔉 Volume decreased by {percent}%")
 
-    #Nested function to turn the volume up
-    def volume_up():
-        keyboard.press_and_release("volume up")
+    elif "brightness up" in command:
+        percent = extract_percent(command) or 10
+        adjust_brightness(percent)
+        print(f"💡 Brightness increased by {percent}%")
 
-    #Nested funtion to turn the volume down
-    def volume_down():
-        keyboard.press_and_release("volume down")
+    elif "brightness down" in command:
+        percent = extract_percent(command) or 10
+        adjust_brightness(-percent)
+        print(f"🌙 Brightness decreased by {percent}%")
 
-    #Execute appropriate commands
-    if command == "mute":
-        mute()
-    elif command == "unmute":
-        unmute()
-    elif command == "volume up":
-        volume_up()
-    elif command == "volume down":
-        volume_down()
-    return True
-    
+    elif "mute mic" in command or "unmute mic" in command:
+        mute_mic()
+        print("🎙️ Mic toggled")
+
+    else:
+        print("❓ Unknown system command.")
+
+# Helper: Extract percentage
+def extract_percent(text):
+    import re
+    match = re.search(r'\b(\d+)%?', text)
+    return int(match.group(1)) if match else None
+
 #Async function to translate and execute user commands
 async def TranslateAndExecute(commands: list[str]):
 
     funcs = []  #List to store async tasks
+    
 
     for command in commands:
+        cmd = command.lower().strip()
         if command.startswith("open "):
 
-            if "open it" in command:
+            if "open it" in cmd:
                 pass
-            if "open file" in command:
+            if "open file" in cmd:
                 pass
             else:
                 fun = asyncio.to_thread(OpenApp, command.removeprefix("open "))  #Schedule app opening
@@ -220,9 +231,27 @@ async def TranslateAndExecute(commands: list[str]):
         elif command.startswith("youtube search "):
             fun = asyncio.to_thread(YoutubeSearch, command.removeprefix('youtube search '))
             funcs.append(fun)
-        elif command.startswith("system "):
-            fun = asyncio.to_thread(System, command.removeprefix("system "))
-            funcs.append(fun)
+            
+        elif "volume up" in cmd:
+            percent = extract_percentage(cmd) or 10
+            funcs.append(asyncio.to_thread(set_volume, percent))
+
+        elif "volume down" in cmd:
+            percent = extract_percentage(cmd) or 10
+            funcs.append(asyncio.to_thread(set_volume, -percent))
+
+        elif "brightness up" in cmd:
+            percent = extract_percentage(cmd) or 10
+            funcs.append(asyncio.to_thread(adjust_brightness, percent))
+
+        elif "brightness down" in cmd:
+            percent = extract_percentage(cmd) or 10
+            funcs.append(asyncio.to_thread(adjust_brightness, -percent))
+
+        elif "mute mic" in cmd or "unmute mic" in cmd:
+            funcs.append(asyncio.to_thread(mute_mic))
+
+        
         else:
             print(f"No Function Found. For {command}")
     results = await asyncio.gather(*funcs)  #Executes all tasks concurrantly
@@ -232,6 +261,12 @@ async def TranslateAndExecute(commands: list[str]):
             yield result
         else:
             yield result
+
+def extract_percentage(text):
+    """Extract % value from text like 'volume up 20%'"""
+    import re
+    match = re.search(r'(\d+)\s*%', text)
+    return int(match.group(1)) if match else None
 
 #Async function to automate command execution
 async def Automation(commands: list[str]):
