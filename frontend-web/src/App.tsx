@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import AuthPage from './components/AuthPage';
+import MainInterface from './components/MainInterface';
+import { User } from './types';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const savedUser = localStorage.getItem('spectreUser');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleLogin = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('spectreUser', JSON.stringify(userData));
+    
+    // Update .env file with username
+    updateEnvFile(userData.username);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('spectreUser');
+    localStorage.removeItem('chatHistory');
+  };
+
+  const updateEnvFile = async (username: string) => {
+    try {
+      // In a real implementation, this would be an API call to update the backend
+      console.log(`Updating .env with username: ${username}`);
+      // For now, we'll just log it since we can't directly modify files from the frontend
+    } catch (error) {
+      console.error('Failed to update environment file:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <AnimatePresence mode="wait">
+        {!user ? (
+          <AuthPage key="auth" onLogin={handleLogin} />
+        ) : (
+          <MainInterface key="main" user={user} onLogout={handleLogout} />
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
 
-export default App
+export default App;
