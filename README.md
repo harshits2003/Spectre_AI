@@ -1,12 +1,12 @@
-# 🌌 AURA_AI - Agentic Voice Chatbot System
+# 🌌 Spectre_AI - Agentic Personal Assistant
 
-**AURA_AI** is an intelligent, real-time, agentic voice chatbot system built for seamless, multi-user, voice-native conversational experiences. Unlike traditional chatbots, AURA_AI offers highly responsive, context-aware interactions powered by dynamic tool orchestration and advanced memory.
+**Spectre_AI** is an intelligent, real-time, agentic personal assistant system built for seamless, multi-user, voice-native conversational experiences. Unlike traditional chatbots, Spectre_AI offers highly responsive, context-aware interactions powered by dynamic tool orchestration and advanced memory.
 
 ---
 
 ## 🧠 Overview
 
-AURA_AI delivers next-generation conversational AI through:
+Spectre_AI delivers next-generation conversational AI through:
 
 - ⚡ Real-time voice responsiveness
 - 🧠 Long-term contextual memory
@@ -62,8 +62,8 @@ It is designed to handle complex, multi-turn dialogues while reasoning intellige
 ### 📥 Clone the Repository
 
 ```bash
-git clone https://github.com/harshits2003/AURA_AI.git
-cd AURA_AI
+git clone https://github.com/harshits2003/Spectre_AI.git
+cd Spectre_AI
 ```
 
 ### 📦 Install Dependencies
