@@ -1,3 +1,5 @@
+#It contains functions for opening and closing apps, performing Google and YouTube searches, generating content using AI, controlling system volume, and asynchronously executing commands.
+
 from AppOpener import close , open as appopen   #Opens and closes apps
 from webbrowser import open as webopen #Opens websites in default browser
 from pywhatkit import search, playonyt   #Import functions for Google searches and YouTube playback
@@ -11,6 +13,10 @@ import os   #For interacting with system
 import requests  #For making HTTP requests
 import keyboard  #For keyboard related actions
 import asyncio   #For Aync programming
+from ics import Calendar, Event
+from datetime import datetime
+import os
+import webbrowser
 
 env_vars = dotenv_values(".env")
 GroqAPIKey = env_vars.get("GroqAPIKey")
@@ -234,6 +240,38 @@ async def Automation(commands: list[str]):
         pass
 
     return True
+
+def create_reminder(datetime_str: str, message: str) -> bool:
+    
+    try:
+        # Parse the datetime string
+        event_time = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+
+        # Create a calendar and event
+        cal = Calendar()
+        event = Event()
+        event.name = message
+        event.begin = event_time
+        event.duration = {"minutes": 30}  # Default duration 30 minutes
+        cal.events.add(event)
+
+        # Prepare the reminders directory
+        reminders_dir = os.path.join(os.getcwd(), "Data", "Reminders")
+        os.makedirs(reminders_dir, exist_ok=True)
+
+        # Save the .ics file
+        filename = f"reminder_{event_time.strftime('%Y%m%d_%H%M')}.ics"
+        filepath = os.path.join(reminders_dir, filename)
+        with open(filepath, "w") as f:
+            f.writelines(cal)
+
+        # Open the .ics file with the default calendar app
+        webbrowser.open(filepath)
+
+        return True
+    except Exception as e:
+        print(f"Error creating reminder: {e}")
+        return False
 
 
             

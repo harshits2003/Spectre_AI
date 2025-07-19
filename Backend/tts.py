@@ -1,3 +1,5 @@
+#It implements text-to-speech functionality using edge_tts for speech synthesis and pygame for audio playback. It also handles long text by splitting and adding predefined responses.
+
 import pygame  #For handling audio playback
 import random  #For generating random choices
 import asyncio  #For async operations

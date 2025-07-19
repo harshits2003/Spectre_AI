@@ -1,3 +1,5 @@
+#It implements a real-time search engine that performs Google searches, integrates results into a chatbot conversation using the Groq API, and returns formatted answers. It also manages chat logs and real-time date/time info.
+
 from googlesearch import search
 from groq import Groq
 from json import load, dump

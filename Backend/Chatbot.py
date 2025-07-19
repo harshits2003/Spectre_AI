@@ -1,3 +1,5 @@
+#It implements a chatbot using the Groq API with real-time information integration, chat log persistence, and response formatting.
+
 from groq import Groq  #Groq Library to use its API
 from json import load,dump  #Functions to read, write JSON fles
 import datetime  #Module for real-time date & time info

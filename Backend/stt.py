@@ -1,3 +1,5 @@
+#It implements speech-to-text functionality using Selenium with a Chrome WebDriver to run a local HTML speech recognition interface. It supports language translation and query formatting.
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
