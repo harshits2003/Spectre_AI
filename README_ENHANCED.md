@@ -25,6 +25,11 @@ This enhanced version of Spectre AI includes user authentication, multi-user sup
 - **Intelligent Memory Extraction**: Automatically extracts and stores relevant information
 - **Memory-Enhanced Responses**: AI uses stored memories to provide personalized responses
 
+### 4. Dual Interface Options
+- **Voice Interface**: Original GUI with speech recognition and voice commands
+- **Chat Interface**: Modern text-based chat with persistent sessions
+- **Interface Selection**: Beautiful main menu to choose preferred interface
+- **Session Management**: Chat history, new chat creation, and session switching
 ## 🏗️ Architecture
 
 ### Database Schema

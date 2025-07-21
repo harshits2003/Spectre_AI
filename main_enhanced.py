@@ -16,6 +16,8 @@ from Backend.stt import SpeechRecognition
 from Backend.enhanced_chatbot import EnhancedChatBot, RealTimeInformation
 from Backend.tts import TextToSpeech
 from frontend.auth_ui import authenticate_user
+from frontend.chat_ui import start_chat_interface
+from frontend.main_menu import show_main_menu
 from dotenv import dotenv_values, set_key
 from asyncio import run
 from time import sleep
@@ -25,6 +27,7 @@ import json
 import os
 import uvicorn
 import multiprocessing
+import sys
 
 env_vars = dotenv_values(".env")
 Assistantname = env_vars.get("Assistantname")
@@ -260,6 +263,9 @@ def SecondThread():
     """GUI thread"""
     GraphicalUserInterface()
 
+def start_chat_interface_thread():
+    """Start chat interface"""
+    start_chat_interface(current_user['user'], current_user['access_token'])
 if __name__ == "__main__":
     print("Starting Spectre AI Enhanced...")
     
@@ -276,17 +282,40 @@ if __name__ == "__main__":
         api_process.terminate()
         exit(1)
     
-    # Initialize
-    InitialExecution()
+    # Show main menu
+    choice = show_main_menu(current_user['user'])
     
-    # Start threads
-    thread1 = threading.Thread(target=FirstThread, daemon=True)
-    thread1.start()
-    
-    try:
-        SecondThread()
-    finally:
-        # Cleanup
+    if choice == 1:
+        # Original Voice Interface
+        print("🎙️ Starting Voice Interface...")
+        
+        # Initialize
+        InitialExecution()
+        
+        # Start threads
+        thread1 = threading.Thread(target=FirstThread, daemon=True)
+        thread1.start()
+        
+        try:
+            SecondThread()
+        finally:
+            # Cleanup
+            api_process.terminate()
+            for p in subprocess_list:
+                p.terminate()
+                
+    elif choice == 2:
+        # Chat Interface
+        print("💬 Starting Chat Interface...")
+        
+        try:
+            start_chat_interface_thread()
+        finally:
+            # Cleanup
+            api_process.terminate()
+            
+    else:
+        # Exit
+        print("👋 Goodbye!")
         api_process.terminate()
-        for p in subprocess_list:
-            p.terminate()
+        sys.exit(0)

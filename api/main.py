@@ -151,7 +151,16 @@ async def chat(
         # Extract and store memories from conversation
         memory_service.extract_and_store_from_conversation(chat_request.message, response)
         
-        return assistant_message
+        # Add session_id to response for frontend
+        assistant_message_dict = {
+            "id": assistant_message.id,
+            "role": assistant_message.role,
+            "content": assistant_message.content,
+            "timestamp": assistant_message.timestamp.isoformat(),
+            "session_id": session.id
+        }
+        
+        return assistant_message_dict
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing message: {str(e)}")
