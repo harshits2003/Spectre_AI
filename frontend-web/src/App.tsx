@@ -20,9 +20,6 @@ function App() {
   const handleLogin = (userData: User) => {
     setUser(userData);
     localStorage.setItem('spectreUser', JSON.stringify(userData));
-    
-    // Update .env file with username
-    updateEnvFile(userData.username);
   };
 
   const handleLogout = () => {
@@ -31,15 +28,6 @@ function App() {
     localStorage.removeItem('chatHistory');
   };
 
-  const updateEnvFile = async (username: string) => {
-    try {
-      // In a real implementation, this would be an API call to update the backend
-      console.log(`Updating .env with username: ${username}`);
-      // For now, we'll just log it since we can't directly modify files from the frontend
-    } catch (error) {
-      console.error('Failed to update environment file:', error);
-    }
-  };
 
   if (isLoading) {
     return (

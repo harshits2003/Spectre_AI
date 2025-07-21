@@ -38,7 +38,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     const userMessage = {
@@ -49,18 +49,29 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     onSendMessage(userMessage);
     setInputValue('');
 
-    // Simulate assistant response
-    setTimeout(() => {
-      onStatusChange({
-        ...assistantStatus,
-        status: 'Thinking...',
-        isThinking: true
+    // Update status to thinking
+    onStatusChange({
+      ...assistantStatus,
+      status: 'Thinking...',
+      isThinking: true
+    });
+
+    try {
+      const response = await fetch('/api/chat/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage.content
+        }),
       });
 
-      setTimeout(() => {
+      if (response.ok) {
+        const data = await response.json();
         const assistantMessage = {
           role: 'assistant' as const,
-          content: `I received your message: "${userMessage.content}". This is a simulated response from Spectre AI. In the actual implementation, this would connect to your Python backend.`
+          content: data.response
         };
 
         onSendMessage(assistantMessage);
@@ -69,8 +80,21 @@ const ChatArea: React.FC<ChatAreaProps> = ({
           status: 'Available...',
           isThinking: false
         });
-      }, 1500);
-    }, 100);
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      const errorMessage = {
+        role: 'assistant' as const,
+        content: 'Sorry, I encountered an error. Please try again.'
+      };
+      onSendMessage(errorMessage);
+      onStatusChange({
+        ...assistantStatus,
+        status: 'Available...',
+        isThinking: false
+      });
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

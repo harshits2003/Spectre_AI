@@ -47,15 +47,32 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Simulate authentication
-      onLogin({
-        username: formData.username,
-        email: formData.email
-      });
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          onLogin(data.user);
+        } else {
+          const errorData = await response.json();
+          setErrors({ general: errorData.error || 'Authentication failed' });
+        }
+      } catch (error) {
+        setErrors({ general: 'Connection error. Please try again.' });
+      }
     }
   };
 
@@ -123,6 +140,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
               Sign Up
             </button>
           </div>
+
+          {errors.general && (
+            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300 text-sm">
+              {errors.general}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Username */}
