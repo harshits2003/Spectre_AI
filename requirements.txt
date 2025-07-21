@@ -16,3 +16,11 @@ edge-tts
 PyQt5
 webdriver-manager
 pycaw
+fastapi
+uvicorn
+sqlalchemy
+alembic
+bcrypt
+python-jose[cryptography]
+python-multipart
+passlib
